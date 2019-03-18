@@ -1,6 +1,18 @@
 language: node_js
+
 node_js:
   - 8
+
+install:
+  - echo "install start"
+  - npm install
+  - echo "install done"
+
+script:
+  - echo "script start"
+  - npm test
+  - npm run build
+  - echo "script done"
 
 deploy:
   provider: firebase
