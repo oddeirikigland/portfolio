@@ -29,4 +29,3 @@ travis.log
 # firebase
 /.firebase
 .firebaserc
-database.rules.json
