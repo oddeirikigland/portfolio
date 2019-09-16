@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 import ReactMapGL, { Marker, Popup, NavigationControl, FullscreenControl } from 'react-map-gl';
 
 import ControlPanel from './control-panel';
+import SegmentPin from "./segment-pin";
+import SegmentInfo from "./segment-info";
 
 const fullscreenControlStyle = {
   position: 'absolute',
@@ -18,9 +20,6 @@ const navStyle = {
   padding: '10px'
 };
 
-const markerStyle = {
-  color: "red"
-}
 
 export default  class Map extends Component {
   state = {
@@ -30,9 +29,27 @@ export default  class Map extends Component {
       latitude: 63,
       longitude: 10,
       zoom: 8
-    }
+    },
+    popupInfo: null
   };
 
+  _renderPopup() {
+    const { popupInfo } = this.state;
+    return (
+      popupInfo && (
+        <Popup
+          tipSize={5}
+          anchor="top"
+          longitude={popupInfo.start_longitude}
+          latitude={popupInfo.start_latitude}
+          closeOnClick={false}
+          onClose={() => this.setState({ popupInfo: null })}
+        >
+          <SegmentInfo info={popupInfo} />
+        </Popup>
+      )
+    );
+  }
   
 
   render() {
@@ -45,11 +62,11 @@ export default  class Map extends Component {
       >
         {this.props.segments.map((item, index) => (
           <Marker key={index} latitude={item.start_latitude} longitude={item.start_longitude} offsetLeft={-20} offsetTop={-10}>
-            <span style={markerStyle}>
-              <i className="fas fa-map-marker"></i>
-            </span>
+            <SegmentPin onClick={() => this.setState({ popupInfo: item })}/>
           </Marker>
         ))}
+
+        {this._renderPopup()}
 
         <div className="fullscreen" style={fullscreenControlStyle}>
           <FullscreenControl />

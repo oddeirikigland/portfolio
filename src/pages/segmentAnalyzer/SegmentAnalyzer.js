@@ -22,7 +22,6 @@ export default class SegmentAnalyzer extends Component {
   }
 
   get_segments() {
-    console.log("clicked");
     axios.get(`https://segment-analyzer.herokuapp.com/strava_segments`).then(res => {
       const segments = res.data
       this.setState({ segments });
