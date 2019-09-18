@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { render } from 'react-dom';
-import ReactMapGL, { Marker, Popup, NavigationControl, FullscreenControl } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup, NavigationControl, FullscreenControl, GeolocateControl } from 'react-map-gl';
 
 import ControlPanel from './control-panel';
 import SegmentPin from "./segment-pin";
@@ -13,9 +13,16 @@ const fullscreenControlStyle = {
   padding: '10px'
 };
 
-const navStyle = {
+const geolocateStyle = {
   position: 'absolute',
   top: 36,
+  left: 0,
+  margin: 10,
+};
+
+const navStyle = {
+  position: 'absolute',
+  top: 72,
   left: 0,
   padding: '10px'
 };
@@ -71,6 +78,13 @@ export default  class Map extends Component {
         <div className="fullscreen" style={fullscreenControlStyle}>
           <FullscreenControl />
         </div>
+
+        <GeolocateControl
+          style={geolocateStyle}
+          positionOptions={{ enableHighAccuracy: true }}
+          trackUserLocation={true}
+        />
+
         <div className="nav" style={navStyle}>
           <NavigationControl />
         </div>
