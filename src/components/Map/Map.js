@@ -37,7 +37,8 @@ export default  class Map extends Component {
       longitude: 10,
       zoom: 8
     },
-    popupInfo: null
+    popupInfo: null,
+    activityView: "All"
   };
 
   _renderPopup() {
@@ -57,6 +58,16 @@ export default  class Map extends Component {
       )
     );
   }
+
+  updateSegmentView = activityType => {
+    const activityView = activityType.type
+    this.setState({ activityView })
+  }
+
+  filterSegments = segment => {
+    if (this.state.activityView === "All") return true
+    return this.state.activityView.valueOf() === segment.activity_type.valueOf()
+  }
   
 
   render() {
@@ -67,7 +78,7 @@ export default  class Map extends Component {
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         onViewportChange={viewport => this.setState({ viewport })}
       >
-        {this.props.segments.map((item, index) => (
+        {this.props.segments.filter(segment => this.filterSegments(segment)).map((item, index) => (
           <Marker key={index} latitude={item.start_latitude} longitude={item.start_longitude} offsetLeft={-20} offsetTop={-10}>
             <SegmentPin onClick={() => this.setState({ popupInfo: item })}/>
           </Marker>
@@ -89,7 +100,7 @@ export default  class Map extends Component {
           <NavigationControl />
         </div>
 
-        <ControlPanel containerComponent={this.props.containerComponent} />
+        <ControlPanel containerComponent={this.props.containerComponent} filterActivityType={this.updateSegmentView}/>
       </ReactMapGL>
     );
   }
