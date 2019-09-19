@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { render } from 'react-dom';
 import ReactMapGL, { Marker, Popup, NavigationControl, FullscreenControl, GeolocateControl } from 'react-map-gl';
+import { fromJS } from 'immutable';
+import { json as requestJson } from 'd3-request';
 
 import ControlPanel from './control-panel';
 import SegmentPin from "./segment-pin";
 import SegmentInfo from "./segment-info";
+import { defaultMapStyle, dataLayer } from './map-style.js';
 
 const fullscreenControlStyle = {
   position: 'absolute',
@@ -38,7 +41,27 @@ export default  class Map extends Component {
       zoom: 8
     },
     popupInfo: null,
-    activityView: "All"
+    activityView: "All",
+    mapStyle: defaultMapStyle,
+    data: null
+  };
+
+  componentDidMount() {
+    requestJson('https://segment-analyzer.herokuapp.com/map/countyNorway', (error, response) => {
+      if (!error) {
+        this._loadData(response);
+      }
+    });
+  }
+
+  _loadData = data => {
+    const mapStyle = defaultMapStyle
+      // Add geojson source to map
+      .setIn(['sources', 'county'], fromJS({ type: 'geojson', data }))
+      // Add point layer to map
+      .set('layers', defaultMapStyle.get('layers').push(dataLayer));
+
+    this.setState({ data, mapStyle });
   };
 
   _renderPopup() {
@@ -74,7 +97,7 @@ export default  class Map extends Component {
     return (
       <ReactMapGL
         {...this.state.viewport}
-        mapStyle="mapbox://styles/mapbox/dark-v9"
+        mapStyle={this.state.mapStyle}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         onViewportChange={viewport => this.setState({ viewport })}
       >
