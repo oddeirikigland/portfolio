@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { render } from 'react-dom';
-import ReactMapGL, { Marker, Popup, NavigationControl, FullscreenControl, GeolocateControl } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup, NavigationControl, FullscreenControl, GeolocateControl, LinearInterpolator } from 'react-map-gl';
 import { fromJS } from 'immutable';
 import { json as requestJson } from 'd3-request';
+import WebMercatorViewport from 'viewport-mercator-project';
+import bbox from '@turf/bbox';
 
 import ControlPanel from './control-panel';
 import SegmentPin from "./segment-pin";
@@ -36,9 +38,9 @@ export default  class Map extends Component {
     viewport: {
       width: "100%",
       height: "100vh",
-      latitude: 63,
-      longitude: 10,
-      zoom: 8
+      latitude: 65,
+      longitude: 15,
+      zoom: 3.5
     },
     popupInfo: null,
     activityView: "All",
@@ -91,7 +93,32 @@ export default  class Map extends Component {
     if (this.state.activityView === "All") return true
     return this.state.activityView.valueOf() === segment.activity_type.valueOf()
   }
-  
+
+  onClickMap = event => {
+    const feature = event.features[0];
+    if (feature) {
+      // calculate the bounding box of the feature
+      const [minLng, minLat, maxLng, maxLat] = bbox(feature);
+      // construct a viewport instance from the current state
+      const viewport = new WebMercatorViewport(this.state.viewport);
+      const {longitude, latitude, zoom} = viewport.fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+        padding: 40
+      });
+
+      this.setState({
+        viewport: {
+          ...this.state.viewport,
+          longitude,
+          latitude,
+          zoom,
+          transitionInterpolator: new LinearInterpolator({
+            around: [event.offsetCenter.x, event.offsetCenter.y]
+          }),
+          transitionDuration: 1000
+        }
+      });
+    }
+  };
 
   render() {
     return (
@@ -99,6 +126,7 @@ export default  class Map extends Component {
         {...this.state.viewport}
         mapStyle={this.state.mapStyle}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        onClick={this.onClickMap}
         onViewportChange={viewport => this.setState({ viewport })}
       >
         {this.props.segments.filter(segment => this.filterSegments(segment)).map((item, index) => (
