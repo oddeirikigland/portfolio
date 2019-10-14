@@ -32,9 +32,9 @@ export default class ControlPanel extends PureComponent {
 
     return (
       <Container>
-        <h3>Segments </h3>
+        <h6>FIND EASISEST SEGMENTS AND GO FOR KOM</h6>
         <p>
-          Map showing segments in area
+          They're ranked from green to red. Press a county to get more local segments.
         </p>
         <p>Filter segment on type of sport</p>
         {this.state.activity.map(this._renderButton)}

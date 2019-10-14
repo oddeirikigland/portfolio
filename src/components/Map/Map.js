@@ -90,13 +90,17 @@ export default  class Map extends Component {
   }
 
   filterSegments = segment => {
-    if (this.state.activityView === "All") return true
-    return this.state.activityView.valueOf() === segment.activity_type.valueOf()
+    let viewSegment = true
+    if (this.state.activityView !== "All") {
+      viewSegment = this.state.activityView.valueOf() === segment.activity_type.valueOf() && viewSegment
+    }
+    return viewSegment
   }
 
   onClickMap = event => {
     const feature = event.features[0];
     if (feature) {
+      const focusCountyNumber = parseInt(feature.properties.fylkesnummer);
       // calculate the bounding box of the feature
       const [minLng, minLat, maxLng, maxLat] = bbox(feature);
       // construct a viewport instance from the current state
@@ -104,6 +108,7 @@ export default  class Map extends Component {
       const {longitude, latitude, zoom} = viewport.fitBounds([[minLng, minLat], [maxLng, maxLat]], {
         padding: 40
       });
+      this.props.segmentApiUpdate(focusCountyNumber)
 
       this.setState({
         viewport: {
@@ -131,7 +136,7 @@ export default  class Map extends Component {
       >
         {this.props.segments.filter(segment => this.filterSegments(segment)).map((item, index) => (
           <Marker key={index} latitude={item.start_latitude} longitude={item.start_longitude} offsetLeft={-20} offsetTop={-10}>
-            <SegmentPin onClick={() => this.setState({ popupInfo: item })}/>
+            <SegmentPin onClick={() => this.setState({ popupInfo: item })} colorPercent={item.color}/>
           </Marker>
         ))}
 
