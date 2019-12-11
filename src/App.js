@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import SegmentAnalyzer from "./pages/segmentAnalyzer/SegmentAnalyzer";
+import Form from "./pages/form/form";
 
 const fouroffour = () => (
   <div
@@ -23,6 +24,7 @@ export default class App extends Component {
         <Switch>
           <Route exact path={'/'} component={Home} />
           <Route exact path={'/strava'} component={SegmentAnalyzer} />
+          <Route exact path={'/form'} component={Form} />
           <Route component={fouroffour} />
         </Switch>
       </BrowserRouter>
