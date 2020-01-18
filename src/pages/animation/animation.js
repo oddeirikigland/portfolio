@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 var camera, scene, renderer;
 var geometry, material, mesh;
-var line, light;
+var light;
  
  
 function init() {

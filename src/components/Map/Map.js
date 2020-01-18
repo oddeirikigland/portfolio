@@ -5,6 +5,7 @@ import { fromJS } from 'immutable';
 import { json as requestJson } from 'd3-request';
 import WebMercatorViewport from 'viewport-mercator-project';
 import bbox from '@turf/bbox';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import ControlPanel from './control-panel';
 import SegmentPin from "./segment-pin";
@@ -34,24 +35,33 @@ const navStyle = {
 
 
 export default  class Map extends Component {
-  state = {
-    viewport: {
-      width: "100%",
-      height: "100vh",
-      latitude: 65,
+  constructor(props) {
+    super(props)
+    this.state = {
+      viewport: {
+        width: "100%",
+        height: "100vh",
+        latitude: 65,
       longitude: 15,
       zoom: 3.5
     },
     popupInfo: null,
     activityView: "All",
     mapStyle: defaultMapStyle,
-    data: null
+    data: null,
+    segmentDistance: 10,
+    focusCountyNumber: 0,
+    numberOfSegments: 100
   };
-
+  this.onSliderChange = this.onSliderChange.bind(this)
+  this.onAfterSliderChange = this.onAfterSliderChange.bind(this)
+}
+  
   componentDidMount() {
     requestJson('https://segment-analyzer.herokuapp.com/map/countyNorway', (error, response) => {
       if (!error) {
-        this._loadData(response);
+        this._loadData(response)
+        this.segmentUpdate()
       }
     });
   }
@@ -86,15 +96,18 @@ export default  class Map extends Component {
 
   updateSegmentView = activityType => {
     const activityView = activityType.type
-    this.setState({ activityView })
+    this.setState({ activityView }, () => {this.segmentUpdate()})
   }
 
-  filterSegments = segment => {
-    let viewSegment = true
-    if (this.state.activityView !== "All") {
-      viewSegment = this.state.activityView.valueOf() === segment.activity_type.valueOf() && viewSegment
-    }
-    return viewSegment
+  segmentUpdate() {
+    this.props.segmentApiUpdate(
+      this.state.focusCountyNumber,
+      this.state.segmentDistance,
+      this.state.viewport.latitude,
+      this.state.viewport.longitude,
+      this.state.activityView,
+      this.state.numberOfSegments
+    )
   }
 
   onClickMap = event => {
@@ -108,7 +121,6 @@ export default  class Map extends Component {
       const {longitude, latitude, zoom} = viewport.fitBounds([[minLng, minLat], [maxLng, maxLat]], {
         padding: 40
       });
-      this.props.segmentApiUpdate(focusCountyNumber)
 
       this.setState({
         viewport: {
@@ -120,9 +132,31 @@ export default  class Map extends Component {
             around: [event.offsetCenter.x, event.offsetCenter.y]
           }),
           transitionDuration: 1000
-        }
+        },
+        focusCountyNumber
       });
+      this.segmentUpdate()
     }
+  };
+
+  onSliderChange = (segmentDistance) => {
+    this.setState({
+      segmentDistance,
+    });
+  };
+
+  onAfterSliderChange = () => {
+    this.segmentUpdate()
+  };
+
+  onSliderChangeNumberSegments = (numberOfSegments) => {
+    this.setState({
+      numberOfSegments,
+    });
+  };
+
+  onAfterSliderChangeNumberSegments = () => {
+    this.segmentUpdate()
   };
 
   render() {
@@ -134,7 +168,7 @@ export default  class Map extends Component {
         onClick={this.onClickMap}
         onViewportChange={viewport => this.setState({ viewport })}
       >
-        {this.props.segments.filter(segment => this.filterSegments(segment)).map((item, index) => (
+        {this.props.segments.map((item, index) => (
           <Marker key={index} latitude={item.start_latitude} longitude={item.start_longitude} offsetLeft={-20} offsetTop={-10}>
             <SegmentPin onClick={() => this.setState({ popupInfo: item })} colorPercent={item.color}/>
           </Marker>
@@ -156,7 +190,16 @@ export default  class Map extends Component {
           <NavigationControl />
         </div>
 
-        <ControlPanel containerComponent={this.props.containerComponent} filterActivityType={this.updateSegmentView}/>
+        <ControlPanel 
+          containerComponent={this.props.containerComponent}
+          filterActivityType={this.updateSegmentView}
+          segmentDistance={this.state.segmentDistance}
+          onSliderChange={this.onSliderChange}
+          onAfterSliderChange={this.onAfterSliderChange}
+          numberOfSegments={this.state.numberOfSegments}
+          onSliderChangeNumberSegments={this.onSliderChangeNumberSegments}
+          onAfterSliderChangeNumberSegments={this.onAfterSliderChangeNumberSegments}
+          />
       </ReactMapGL>
     );
   }

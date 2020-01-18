@@ -25,26 +25,25 @@ export default class SegmentAnalyzer extends Component {
     super(props);
     this.state = {
       segments: [],
-      loading: true
+      loading: false
     };
     this.get_segments = this.get_segments.bind(this);
     this.segmentApiUpdate = this.segmentApiUpdate.bind(this);
   }
 
-  componentDidMount() {
-    this.get_segments()
-  }
-
-  get_segments(countyNumber=0) {
-    axios.get(`https://segment-analyzer.herokuapp.com/strava_segments?county_number=${countyNumber}`).then(res => {
+  get_segments(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments) {
+    const loading = true
+    this.setState({ loading });
+    
+    axios.get(`https://segment-analyzer.herokuapp.com/strava_segments?county_number=${countyNumber}&segment_distance=${segmentDistance}&latitude=${latitude}&longitude=${longitude}&activity_view=${activityView}&number_of_segments=${numberOfSegments}`).then(res => {
       const segments = res.data
       const loading = false
       this.setState({ segments, loading });
     });
   }
 
-  segmentApiUpdate(countyNumber) {
-    this.get_segments(countyNumber)
+  segmentApiUpdate(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments) {
+    this.get_segments(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments)
   }  
 
   render() {
