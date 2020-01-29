@@ -39,6 +39,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "pre-commit": "^1.2.2",
     "prettier": "^1.19.1"
-  }
+  },
+  "pre-commit": [
+    "prettier"
+  ]
 }
