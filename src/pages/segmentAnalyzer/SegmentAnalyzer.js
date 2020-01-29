@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { css } from '@emotion/core';
+import { css } from "@emotion/core";
 import RingLoader from "react-spinners/RingLoader";
 
-import SegmentMap from "../../components/Map/SegmentMap"
+import SegmentMap from "../../components/Map/SegmentMap";
 
 const segmentAnalyzerStyle = {
   width: "100%",
@@ -29,26 +29,51 @@ export default class SegmentAnalyzer extends Component {
     };
     this.get_segments = this.get_segments.bind(this);
     this.segmentApiUpdate = this.segmentApiUpdate.bind(this);
-    this.toogleLoading = this.toogleLoading.bind(this)
+    this.toogleLoading = this.toogleLoading.bind(this);
   }
 
-  get_segments(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments) {
-    const loading = true
+  get_segments(
+    countyNumber,
+    segmentDistance,
+    latitude,
+    longitude,
+    activityView,
+    numberOfSegments
+  ) {
+    const loading = true;
     this.setState({ loading });
-    
-    axios.get(`https://segment-analyzer.herokuapp.com/strava_segments?county_number=${countyNumber}&segment_distance=${segmentDistance}&latitude=${latitude}&longitude=${longitude}&activity_view=${activityView}&number_of_segments=${numberOfSegments}`).then(res => {
-      const segments = res.data
-      const loading = false
-      this.setState({ segments, loading });
-    });
+
+    axios
+      .get(
+        `https://segment-analyzer.herokuapp.com/strava_segments?county_number=${countyNumber}&segment_distance=${segmentDistance}&latitude=${latitude}&longitude=${longitude}&activity_view=${activityView}&number_of_segments=${numberOfSegments}`
+      )
+      .then(res => {
+        const segments = res.data;
+        const loading = false;
+        this.setState({ segments, loading });
+      });
   }
 
-  segmentApiUpdate(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments) {
-    this.get_segments(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments)
+  segmentApiUpdate(
+    countyNumber,
+    segmentDistance,
+    latitude,
+    longitude,
+    activityView,
+    numberOfSegments
+  ) {
+    this.get_segments(
+      countyNumber,
+      segmentDistance,
+      latitude,
+      longitude,
+      activityView,
+      numberOfSegments
+    );
   }
 
   toogleLoading() {
-    this.setState({loading: !this.state.loading})
+    this.setState({ loading: !this.state.loading });
   }
 
   render() {
@@ -58,11 +83,14 @@ export default class SegmentAnalyzer extends Component {
           css={spinnerStyle}
           sizeUnit={"px"}
           size={150}
-          color={'#36D7B7'}
+          color={"#36D7B7"}
           loading={this.state.loading}
         />
-        <SegmentMap segments={this.state.segments} segmentApiUpdate={this.segmentApiUpdate} toogleLoading={this.toogleLoading}/>
-       
+        <SegmentMap
+          segments={this.state.segments}
+          segmentApiUpdate={this.segmentApiUpdate}
+          toogleLoading={this.toogleLoading}
+        />
       </div>
     );
   }
