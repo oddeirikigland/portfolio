@@ -69,7 +69,7 @@ export default class CityMonitor extends Component {
         const station_index = stations.findIndex(
           station => station.station_id === station_status.station_id
         );
-        if(typeof stations[station_index] !== 'undefined') {
+        if (typeof stations[station_index] !== "undefined") {
           stations[station_index].color = color;
         }
       });
