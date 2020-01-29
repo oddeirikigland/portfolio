@@ -12,6 +12,7 @@ export default class Navigationbar extends Component {
             <Nav className="mr-auto">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/strava">Segment Analyzer</Nav.Link>
+              <Nav.Link href="/city">Available City bikes</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

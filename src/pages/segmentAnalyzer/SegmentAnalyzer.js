@@ -3,7 +3,7 @@ import axios from "axios";
 import { css } from '@emotion/core';
 import RingLoader from "react-spinners/RingLoader";
 
-import Map from "../../components/Map/Map"
+import SegmentMap from "../../components/Map/SegmentMap"
 
 const segmentAnalyzerStyle = {
   width: "100%",
@@ -29,6 +29,7 @@ export default class SegmentAnalyzer extends Component {
     };
     this.get_segments = this.get_segments.bind(this);
     this.segmentApiUpdate = this.segmentApiUpdate.bind(this);
+    this.toogleLoading = this.toogleLoading.bind(this)
   }
 
   get_segments(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments) {
@@ -44,7 +45,11 @@ export default class SegmentAnalyzer extends Component {
 
   segmentApiUpdate(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments) {
     this.get_segments(countyNumber, segmentDistance, latitude, longitude, activityView, numberOfSegments)
-  }  
+  }
+
+  toogleLoading() {
+    this.setState({loading: !this.state.loading})
+  }
 
   render() {
     return (
@@ -56,7 +61,7 @@ export default class SegmentAnalyzer extends Component {
           color={'#36D7B7'}
           loading={this.state.loading}
         />
-        <Map segments={this.state.segments} segmentApiUpdate={this.segmentApiUpdate}/>
+        <SegmentMap segments={this.state.segments} segmentApiUpdate={this.segmentApiUpdate} toogleLoading={this.toogleLoading}/>
        
       </div>
     );
