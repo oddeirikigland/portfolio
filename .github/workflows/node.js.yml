@@ -26,4 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm test
-    - run: npm run deploy
+    - name: Deploy to github pages
+      env:
+        DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+      run: npm run deploy
