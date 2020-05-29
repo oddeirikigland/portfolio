@@ -22,13 +22,13 @@ const fouroffour = () => (
 export default class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route exact path={"/"} component={Home} />
-          <Route exact path={"/strava"} component={SegmentAnalyzer} />
-          <Route exact path={"/form"} component={Form} />
-          <Route exact path={"/animation"} component={Animation} />
-          <Route exact path={"/city"} component={CityMonitor} />
+          <Route path={"/strava"} component={SegmentAnalyzer} />
+          <Route path={"/form"} component={Form} />
+          <Route path={"/animation"} component={Animation} />
+          <Route path={"/city"} component={CityMonitor} />
           <Route component={fouroffour} />
         </Switch>
       </BrowserRouter>

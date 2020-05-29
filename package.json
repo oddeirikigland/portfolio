@@ -8,6 +8,7 @@
     "bootstrap": "^4.5.0",
     "d3-request": "^1.0.6",
     "firebase": "^6.6.1",
+    "gh-pages": "^2.2.0",
     "immutable": "^4.0.0-rc.12",
     "rc-slider": "^8.7.1",
     "react": "^16.13.1",
@@ -26,9 +27,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && firebase deploy",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "prettier": "prettier --write 'src/**/*.{ts,js,css,html}'"
   },
+  "homepage": "https://oddeirikigland.github.io/portfolio",
   "eslintConfig": {
     "extends": "react-app"
   },
