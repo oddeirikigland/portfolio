@@ -2,18 +2,23 @@
   background-image: url("../../resources/images/backlit.jpg");
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 #container {
-  width: 76px;
-  height: 45px;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-size: 30px;
+}
 
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+#container p {
+  font-size: 15px;
+}
 
-  margin: auto;
+#grid {
+  width: 100%;
+  padding: 2%;
 }

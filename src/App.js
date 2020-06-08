@@ -15,9 +15,14 @@ const fouroffour = () => (
       textAlign: "center"
     }}
   >
-    Siden du ser etter finnes ikke.
+    The page you are looking for does not exist.
   </div>
 );
+
+const redirectToUrl = urlAddress => {
+  window.location.href = urlAddress;
+  return null;
+};
 
 export default class App extends Component {
   render() {
@@ -29,6 +34,31 @@ export default class App extends Component {
           <Route path={"/form"} component={Form} />
           <Route path={"/animation"} component={Animation} />
           <Route path={"/city"} component={CityMonitor} />
+          <Route
+            path="/strava_table"
+            component={() => redirectToUrl(
+              "https://segment-analyzer.herokuapp.com/strava"
+            )}
+          />
+          <Route
+            path="/ambient"
+            component={() => redirectToUrl(
+              "https://shielded-peak-50254.herokuapp.com/"
+            )}
+          />
+          <Route
+            path="/restart_in_julia"
+            component={() => redirectToUrl(
+              "https://oddeirikigland.github.io/restarts-in-julia/stable/"
+            )}
+          />
+<Route
+            path="/pred_telenor"
+            component={() => redirectToUrl(
+              "https://htmlpreview.github.io/?https://raw.githubusercontent.com/oddeirikigland/Summer-Project-Smarte-bygg/master/models/all_models.html"
+            )}
+          />
+          
           <Route component={fouroffour} />
         </Switch>
       </BrowserRouter>
