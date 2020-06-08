@@ -27,14 +27,18 @@ const projects = [
     text:
       "It is intended to be non portable and placed e.g. in the hall. The need of easy accessible information is convenient in a busy everyday life. The display is a enhanced version of a notice board that changes according to who is looking at it.",
     link: "ambient"
-  }, {
+  },
+  {
     title: "Restarts in Julia",
-    text: "Handling of exceptional situations in Julia, including use of restarts. This is the documentation for the project.",
-    link: "restart_in_julia",
-  }, {
+    text:
+      "Handling of exceptional situations in Julia, including use of restarts. This is the documentation for the project.",
+    link: "restart_in_julia"
+  },
+  {
     title: "Regression modelling",
-    text: "The main purpose of this project is to predict how many people that will come to work at Telenor Fornebu, for up to x into the future.",
-    link: "pred_telenor",
+    text:
+      "The main purpose of this project is to predict how many people that will come to work at Telenor Fornebu, for up to x into the future.",
+    link: "pred_telenor"
   }
 ];
 

@@ -36,29 +36,33 @@ export default class App extends Component {
           <Route path={"/city"} component={CityMonitor} />
           <Route
             path="/strava_table"
-            component={() => redirectToUrl(
-              "https://segment-analyzer.herokuapp.com/strava"
-            )}
+            component={() =>
+              redirectToUrl("https://segment-analyzer.herokuapp.com/strava")
+            }
           />
           <Route
             path="/ambient"
-            component={() => redirectToUrl(
-              "https://shielded-peak-50254.herokuapp.com/"
-            )}
+            component={() =>
+              redirectToUrl("https://shielded-peak-50254.herokuapp.com/")
+            }
           />
           <Route
             path="/restart_in_julia"
-            component={() => redirectToUrl(
-              "https://oddeirikigland.github.io/restarts-in-julia/stable/"
-            )}
+            component={() =>
+              redirectToUrl(
+                "https://oddeirikigland.github.io/restarts-in-julia/stable/"
+              )
+            }
           />
-<Route
+          <Route
             path="/pred_telenor"
-            component={() => redirectToUrl(
-              "https://htmlpreview.github.io/?https://raw.githubusercontent.com/oddeirikigland/Summer-Project-Smarte-bygg/master/models/all_models.html"
-            )}
+            component={() =>
+              redirectToUrl(
+                "https://htmlpreview.github.io/?https://raw.githubusercontent.com/oddeirikigland/Summer-Project-Smarte-bygg/master/models/all_models.html"
+              )
+            }
           />
-          
+
           <Route component={fouroffour} />
         </Switch>
       </BrowserRouter>
