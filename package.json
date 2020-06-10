@@ -32,7 +32,7 @@
     "deploy": "gh-pages -d build",
     "prettier": "prettier --write 'src/**/*.{ts,js,css,html}'"
   },
-  "homepage": "https://oddeirikigland.github.io/portfolio",
+  "homepage": "https://oddeirik.no",
   "eslintConfig": {
     "extends": "react-app"
   },
