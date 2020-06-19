@@ -1,7 +1,7 @@
 import React from 'react'
 import './Icons.css'
 
-export default () => {
+const Icons = () => {
   return (
     <div>
       <span id='icon'>
@@ -24,3 +24,5 @@ export default () => {
     </div>
   )
 }
+
+export default Icons
