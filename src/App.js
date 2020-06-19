@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import ReactGA from "react-ga"
 import Home from './pages/home/Home'
 import SegmentAnalyzer from './pages/segmentAnalyzer/SegmentAnalyzer'
 import Form from './pages/form/form'
 import Animation from './pages/animation/animation'
 import CityMonitor from './pages/cityMonitor/cityMonitor'
+
+ReactGA.initialize(process.env.REACT_APP_TRACKING_CODE)
+ReactGA.pageview('/')
 
 const fouroffour = () => (
   <div

@@ -1,8 +1,10 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import ReactGA from 'react-ga'
 
 const CardComp = props => {
+  ReactGA.pageview('/' + props.link)
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Body>
