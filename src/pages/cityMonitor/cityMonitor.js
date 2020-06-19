@@ -1,88 +1,108 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react'
+import axios from 'axios'
+import RingLoader from 'react-spinners/RingLoader'
+import { css } from '@emotion/core'
+import CityMonitorMap from '../../components/Map/CityMonitorMap'
 
-import CityMonitorMap from "../../components/Map/CityMonitorMap";
-
-const CLIENT_ID = process.env.REACT_APP_CYCLE_IDENTIFIER;
+const CLIENT_ID = process.env.REACT_APP_CYCLE_IDENTIFIER
 
 const segmentAnalyzerStyle = {
-  width: "100%",
-  height: "100%"
-};
+  width: '100%',
+  height: '100%'
+}
+
+const spinnerStyle = css`
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  position: absolute;
+  z-index: 99;
+`
 
 export default class CityMonitor extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       loading: false,
       stations: [],
       availability: []
-    };
-    this.get_stations = this.get_stations.bind(this);
-    this.get_availability = this.get_availability.bind(this);
+    }
+    this.getStations = this.getStations.bind(this)
+    this.getAvailability = this.getAvailability.bind(this)
   }
 
-  componentDidMount() {
-    this.get_stations();
-    this.get_availability();
-    setInterval(() => this.get_availability(), 11000);
+  async componentDidMount () {
+    this.setState({ loading: true })
+    await this.getStations()
+    await this.getAvailability()
+    setInterval(() => this.getAvailability(), 11000)
   }
 
-  get_stations() {
+  async getStations () {
     const URL =
-      "https://gbfs.urbansharing.com/trondheimbysykkel.no/station_information.json";
+      'https://gbfs.urbansharing.com/trondheimbysykkel.no/station_information.json'
 
     axios
-      .get(URL, { headers: { "Client-Identifier": CLIENT_ID } })
+      .get(URL, { headers: { 'Client-Identifier': CLIENT_ID } })
       .then(res => {
-        const stations = res.data.data.stations;
-        this.setState({ stations });
+        const stations = res.data.data.stations
+        this.setState({ stations })
       })
       .catch(error => {
-        console.log("error 3 " + error);
-      });
+        console.log('error 3 ' + error)
+      })
   }
 
-  get_availability() {
+  async getAvailability () {
+    this.setState({ loading: true })
     const URL =
-      "https://gbfs.urbansharing.com/trondheimbysykkel.no/station_status.json";
+      'https://gbfs.urbansharing.com/trondheimbysykkel.no/station_status.json'
 
     axios
-      .get(URL, { headers: { "Client-Identifier": CLIENT_ID } })
+      .get(URL, { headers: { 'Client-Identifier': CLIENT_ID } })
       .then(res => {
-        const availability = res.data.data.stations;
-        this.setState({ availability }, () => this.set_station_status());
+        const availability = res.data.data.stations
+        this.setState({ availability }, () => this.setStationStatus())
       })
       .catch(error => {
-        console.log("error 3 " + error);
-      });
+        console.log('error 3 ' + error)
+      })
   }
 
-  set_station_status() {
+  setStationStatus () {
     this.setState(prevState => {
-      const stations = [...prevState.stations];
+      const stations = [...prevState.stations]
 
-      this.state.availability.forEach(station_status => {
+      this.state.availability.forEach(stationStatus => {
         const color =
-          (100 * station_status.num_bikes_available) /
-          station_status.num_docks_available;
-        const station_index = stations.findIndex(
-          station => station.station_id === station_status.station_id
-        );
-        if (typeof stations[station_index] !== "undefined") {
-          stations[station_index].color = color;
+          (100 * stationStatus.num_bikes_available) /
+          stationStatus.num_docks_available
+        const stationIndex = stations.findIndex(
+          station => station.station_id === stationStatus.station_id
+        )
+        if (typeof stations[stationIndex] !== 'undefined') {
+          stations[stationIndex].color = color
         }
-      });
+      })
 
-      return { stations };
-    });
+      return { stations, loading: false }
+    })
   }
 
-  render() {
+  render () {
     return (
-      <div id={"cityMonitor"} style={segmentAnalyzerStyle}>
+      <div id='cityMonitor' style={segmentAnalyzerStyle}>
+        <RingLoader
+          css={spinnerStyle}
+          sizeUnit='px'
+          size={150}
+          color='#36D7B7'
+          loading={this.state.loading}
+        />
         <CityMonitorMap stations={this.state.stations} />
       </div>
-    );
+    )
   }
 }
