@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 import ReactMapGL, {
   Marker,
   Popup,
@@ -7,88 +7,88 @@ import ReactMapGL, {
   FullscreenControl,
   GeolocateControl,
   LinearInterpolator
-} from "react-map-gl";
-import { fromJS } from "immutable";
-import { json as requestJson } from "d3-request";
-import WebMercatorViewport from "viewport-mercator-project";
-import bbox from "@turf/bbox";
-import "mapbox-gl/dist/mapbox-gl.css";
+} from 'react-map-gl'
+import { fromJS } from 'immutable'
+import { json as requestJson } from 'd3-request'
+import WebMercatorViewport from 'viewport-mercator-project'
+import bbox from '@turf/bbox'
+import 'mapbox-gl/dist/mapbox-gl.css'
 
-import ControlPanel from "./control-panel";
-import SegmentPin from "./segment-pin";
-import SegmentInfo from "./segment-info";
-import { defaultMapStyle, dataLayer } from "./map-style.js";
+import ControlPanel from './control-panel'
+import SegmentPin from './segment-pin'
+import SegmentInfo from './segment-info'
+import { defaultMapStyle, dataLayer } from './map-style.js'
 
 const fullscreenControlStyle = {
-  position: "absolute",
+  position: 'absolute',
   top: 0,
   left: 0,
-  padding: "10px"
-};
+  padding: '10px'
+}
 
 const geolocateStyle = {
-  position: "absolute",
+  position: 'absolute',
   top: 36,
   left: 0,
   margin: 10
-};
+}
 
 const navStyle = {
-  position: "absolute",
+  position: 'absolute',
   top: 72,
   left: 0,
-  padding: "10px"
-};
+  padding: '10px'
+}
 
 export default class SegmentMap extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       viewport: {
-        width: "100%",
-        height: "100vh",
+        width: '100%',
+        height: '100vh',
         latitude: 65,
         longitude: 15,
         zoom: 3.5
       },
       popupInfo: null,
-      activityView: "All",
+      activityView: 'All',
       mapStyle: defaultMapStyle,
       data: null,
       segmentDistance: 5000,
       focusCountyNumber: 0,
       numberOfSegments: 100
-    };
-    this.onSliderChange = this.onSliderChange.bind(this);
-    this.onAfterSliderChange = this.onAfterSliderChange.bind(this);
+    }
+    this.onSliderChange = this.onSliderChange.bind(this)
+    this.onAfterSliderChange = this.onAfterSliderChange.bind(this)
   }
 
-  componentDidMount() {
-    this.props.toogleLoading();
+  componentDidMount () {
+    this.props.toogleLoading()
     requestJson(
-      "https://segment-analyzer.herokuapp.com/map/countyNorway",
+      'https://segment-analyzer.herokuapp.com/map/countyNorway',
       (error, response) => {
-        this.props.toogleLoading();
+        this.props.toogleLoading()
         if (!error) {
-          this._loadData(response);
-          this.segmentUpdate();
+          this._loadData(response)
+          this.segmentUpdate()
         }
       }
-    );
+    )
   }
 
-  _loadData = data => {
+  _loadData (data) {
     const mapStyle = defaultMapStyle
       // Add geojson source to map
-      .setIn(["sources", "county"], fromJS({ type: "geojson", data }))
+      .setIn(['sources', 'county'], fromJS({ type: 'geojson', data }))
       // Add point layer to map
-      .set("layers", defaultMapStyle.get("layers").push(dataLayer));
+      .set('layers', defaultMapStyle.get('layers').push(dataLayer))
 
-    this.setState({ data, mapStyle });
+    this.setState({ data, mapStyle })
   };
 
-  _renderPopup() {
-    const { popupInfo } = this.state;
+  _renderPopup () {
+    const { popupInfo } = this.state
     return (
       popupInfo && (
         <Popup
@@ -102,17 +102,17 @@ export default class SegmentMap extends Component {
           <SegmentInfo info={popupInfo} />
         </Popup>
       )
-    );
+    )
   }
 
-  updateSegmentView = activityType => {
-    const activityView = activityType.type;
+  updateSegmentView (activityType) {
+    const activityView = activityType.type
     this.setState({ activityView }, () => {
-      this.segmentUpdate();
-    });
+      this.segmentUpdate()
+    })
   };
 
-  segmentUpdate() {
+  segmentUpdate () {
     this.props.segmentApiUpdate(
       this.state.focusCountyNumber,
       this.state.segmentDistance,
@@ -120,17 +120,17 @@ export default class SegmentMap extends Component {
       this.state.viewport.longitude,
       this.state.activityView,
       this.state.numberOfSegments
-    );
+    )
   }
 
-  onClickMap = event => {
-    const feature = event.features[0];
+  onClickMap (event) {
+    const feature = event.features[0]
     if (feature) {
-      const focusCountyNumber = parseInt(feature.properties.fylkesnummer);
+      const focusCountyNumber = parseInt(feature.properties.fylkesnummer)
       // calculate the bounding box of the feature
-      const [minLng, minLat, maxLng, maxLat] = bbox(feature);
+      const [minLng, minLat, maxLng, maxLat] = bbox(feature)
       // construct a viewport instance from the current state
-      const viewport = new WebMercatorViewport(this.state.viewport);
+      const viewport = new WebMercatorViewport(this.state.viewport)
       const { longitude, latitude, zoom } = viewport.fitBounds(
         [
           [minLng, minLat],
@@ -139,7 +139,7 @@ export default class SegmentMap extends Component {
         {
           padding: 40
         }
-      );
+      )
 
       this.setState({
         viewport: {
@@ -153,32 +153,32 @@ export default class SegmentMap extends Component {
           transitionDuration: 1000
         },
         focusCountyNumber
-      });
-      this.segmentUpdate();
+      })
+      this.segmentUpdate()
     }
   };
 
-  onSliderChange = segmentDistance => {
+  onSliderChange (segmentDistance) {
     this.setState({
       segmentDistance
-    });
+    })
   };
 
-  onAfterSliderChange = () => {
-    this.segmentUpdate();
+  onAfterSliderChange () {
+    this.segmentUpdate()
   };
 
-  onSliderChangeNumberSegments = numberOfSegments => {
+  onSliderChangeNumberSegments (numberOfSegments) {
     this.setState({
       numberOfSegments
-    });
+    })
   };
 
-  onAfterSliderChangeNumberSegments = () => {
-    this.segmentUpdate();
+  onAfterSliderChangeNumberSegments () {
+    this.segmentUpdate()
   };
 
-  render() {
+  render () {
     return (
       <ReactMapGL
         {...this.state.viewport}
@@ -231,10 +231,10 @@ export default class SegmentMap extends Component {
           }
         />
       </ReactMapGL>
-    );
+    )
   }
 }
 
-export function renderToDom(container) {
-  render(<SegmentMap />, container);
+export function renderToDom (container) {
+  render(<SegmentMap />, container)
 }
