@@ -47,18 +47,12 @@ export default class App extends Component {
           <Route
             path='/restart_in_julia'
             component={() =>
-              redirectToUrl(
-                'https://oddeirikigland.github.io/restarts-in-julia/stable/'
-              )
-            }
+              redirectToUrl('https://oddeirikigland.github.io/restarts-in-julia/stable/')}
           />
           <Route
             path='/pred_telenor'
             component={() =>
-              redirectToUrl(
-                'https://htmlpreview.github.io/?https://raw.githubusercontent.com/oddeirikigland/Summer-Project-Smarte-bygg/master/models/all_models.html'
-              )
-            }
+              redirectToUrl('https://htmlpreview.github.io/?https://raw.githubusercontent.com/oddeirikigland/Summer-Project-Smarte-bygg/master/models/all_models.html')}
           />
 
           <Route component={fouroffour} />

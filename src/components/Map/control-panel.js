@@ -5,7 +5,7 @@ import './control-panel.css'
 import 'rc-slider/assets/index.css'
 
 const defaultContainer = ({ children }) => (
-  <div className="control-panel">{children}</div>
+  <div className='control-panel'>{children}</div>
 )
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 
@@ -27,10 +27,10 @@ export default class ControlPanel extends PureComponent {
 
   _renderButton (activity, index) {
     return (
-      <div key={`btn-${index}`} className="input">
+      <div key={`btn-${index}`} className='input'>
         <input
-          type="radio"
-          name="activity"
+          type='radio'
+          name='activity'
           id={`activity-${index}`}
           defaultChecked={activity.type === 'All'}
           onClick={() => this.props.filterActivityType(activity)}

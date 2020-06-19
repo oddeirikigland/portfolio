@@ -93,7 +93,7 @@ export default class SegmentMap extends Component {
       popupInfo && (
         <Popup
           tipSize={5}
-          anchor="top"
+          anchor='top'
           longitude={popupInfo.start_longitude}
           latitude={popupInfo.start_latitude}
           closeOnClick={false}
@@ -123,7 +123,7 @@ export default class SegmentMap extends Component {
     )
   }
 
-  onClickMap (event) {
+  handleOnClickMap (event) {
     const feature = event.features[0]
     if (feature) {
       const focusCountyNumber = parseInt(feature.properties.fylkesnummer)
@@ -158,23 +158,23 @@ export default class SegmentMap extends Component {
     }
   };
 
-  onSliderChange (segmentDistance) {
+  handleOnSliderChange (segmentDistance) {
     this.setState({
       segmentDistance
     })
   };
 
-  onAfterSliderChange () {
+  handleOnAfterSliderChange () {
     this.segmentUpdate()
   };
 
-  onSliderChangeNumberSegments (numberOfSegments) {
+  handleOnSliderChangeNumberSegments (numberOfSegments) {
     this.setState({
       numberOfSegments
     })
   };
 
-  onAfterSliderChangeNumberSegments () {
+  handleOnAfterSliderChangeNumberSegments () {
     this.segmentUpdate()
   };
 
@@ -184,7 +184,7 @@ export default class SegmentMap extends Component {
         {...this.state.viewport}
         mapStyle={this.state.mapStyle}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        onClick={this.onClickMap}
+        onClick={this.handleOnClickMap}
         onViewportChange={viewport => this.setState({ viewport })}
       >
         {this.props.segments.map((item, index) => (
@@ -204,17 +204,17 @@ export default class SegmentMap extends Component {
 
         {this._renderPopup()}
 
-        <div className="fullscreen" style={fullscreenControlStyle}>
+        <div className='fullscreen' style={fullscreenControlStyle}>
           <FullscreenControl />
         </div>
 
         <GeolocateControl
           style={geolocateStyle}
           positionOptions={{ enableHighAccuracy: true }}
-          trackUserLocation={true}
+          trackUserLocation
         />
 
-        <div className="nav" style={navStyle}>
+        <div className='nav' style={navStyle}>
           <NavigationControl />
         </div>
 
@@ -222,12 +222,12 @@ export default class SegmentMap extends Component {
           containerComponent={this.props.containerComponent}
           filterActivityType={this.updateSegmentView}
           segmentDistance={this.state.segmentDistance}
-          onSliderChange={this.onSliderChange}
-          onAfterSliderChange={this.onAfterSliderChange}
+          onSliderChange={this.handleOnSliderChange}
+          onAfterSliderChange={this.handleOnAfterSliderChange}
           numberOfSegments={this.state.numberOfSegments}
-          onSliderChangeNumberSegments={this.onSliderChangeNumberSegments}
+          onSliderChangeNumberSegments={this.handleOnSliderChangeNumberSegments}
           onAfterSliderChangeNumberSegments={
-            this.onAfterSliderChangeNumberSegments
+            this.handleOnAfterSliderChangeNumberSegments
           }
         />
       </ReactMapGL>
