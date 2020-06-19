@@ -37,8 +37,8 @@ jobs:
           REACT_APP_CYCLE_IDENTIFIER: ${{ secrets.REACT_APP_CYCLE_IDENTIFIER }}
           REACT_APP_TRACKING_CODE: ${{ secrets.REACT_APP_TRACKING_CODE }}
     - name: Deploy to github pages
-    uses: peaceiris/actions-gh-pages@v3
-    if: ${{ github.event_name == 'pull_request'
-    with:
-      deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-      publish_dir: ./build
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.event_name == 'pull_request'
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_dir: ./build
