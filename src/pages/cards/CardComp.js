@@ -3,17 +3,20 @@ import { Card, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ReactGA from 'react-ga'
 
-const CardComp = props => {
+const cardClicked = link => {
   if (process.env.NODE_ENV === 'production') {
-    ReactGA.pageview('/' + props.link)
+    ReactGA.pageview('/' + link)
   }
+}
+
+const CardComp = props => {
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Body>
         <Card.Title>{props.title}</Card.Title>
         <Card.Text>{props.text}</Card.Text>
         <Link to={props.link}>
-          <Button variant='primary'>Take a look</Button>
+          <Button onClick={() => cardClicked(props.link)} variant='primary'>Take a look</Button>
         </Link>
       </Card.Body>
     </Card>
