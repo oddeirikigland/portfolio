@@ -1,26 +1,26 @@
-import React from "react";
-import "./Icons.css";
+import React from 'react'
+import './Icons.css'
 
 export default () => {
   return (
     <div>
-      <span id={"icon"}>
+      <span id='icon'>
         <a
-          style={{ color: "inherit" }}
-          href="https://github.com/oddeirikigland"
+          style={{ color: 'inherit' }}
+          href='https://github.com/oddeirikigland'
         >
-          <i className="fab fa-github mdi-dark" />
+          <i className='fab fa-github mdi-dark' />
         </a>
       </span>
 
-      <span id={"icon"}>
+      <span id='icon'>
         <a
-          style={{ color: "inherit" }}
-          href="https://www.linkedin.com/in/odd-eirik-igland-342172155"
+          style={{ color: 'inherit' }}
+          href='https://www.linkedin.com/in/odd-eirik-igland-342172155'
         >
-          <i className="fab fa-linkedin" />
+          <i className='fab fa-linkedin' />
         </a>
       </span>
     </div>
-  );
-};
+  )
+}

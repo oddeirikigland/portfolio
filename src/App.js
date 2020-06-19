@@ -1,71 +1,67 @@
-import React, { Component } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Home from "./pages/home/Home";
-import SegmentAnalyzer from "./pages/segmentAnalyzer/SegmentAnalyzer";
-import Form from "./pages/form/form";
-import Animation from "./pages/animation/animation";
-import CityMonitor from "./pages/cityMonitor/cityMonitor";
+import React, { Component } from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Home from './pages/home/Home'
+import SegmentAnalyzer from './pages/segmentAnalyzer/SegmentAnalyzer'
+import Form from './pages/form/form'
+import Animation from './pages/animation/animation'
+import CityMonitor from './pages/cityMonitor/cityMonitor'
 
 const fouroffour = () => (
   <div
     style={{
-      position: "absolute",
-      width: "100%",
-      top: "50%",
-      textAlign: "center"
+      position: 'absolute',
+      width: '100%',
+      top: '50%',
+      textAlign: 'center'
     }}
   >
     The page you are looking for does not exist.
   </div>
-);
+)
 
 const redirectToUrl = urlAddress => {
-  window.location.href = urlAddress;
-  return null;
-};
+  window.location.href = urlAddress
+  return null
+}
 
 export default class App extends Component {
-  render() {
+  render () {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
-          <Route exact path={"/"} component={Home} />
-          <Route path={"/strava"} component={SegmentAnalyzer} />
-          <Route path={"/form"} component={Form} />
-          <Route path={"/animation"} component={Animation} />
-          <Route path={"/city"} component={CityMonitor} />
+          <Route exact path='/' component={Home} />
+          <Route path='/strava' component={SegmentAnalyzer} />
+          <Route path='/form' component={Form} />
+          <Route path='/animation' component={Animation} />
+          <Route path='/city' component={CityMonitor} />
           <Route
-            path="/strava_table"
+            path='/strava_table'
             component={() =>
-              redirectToUrl("https://segment-analyzer.herokuapp.com/strava")
-            }
+              redirectToUrl('https://segment-analyzer.herokuapp.com/strava')}
           />
           <Route
-            path="/ambient"
+            path='/ambient'
             component={() =>
-              redirectToUrl("https://shielded-peak-50254.herokuapp.com/")
-            }
+              redirectToUrl('https://shielded-peak-50254.herokuapp.com/')}
           />
           <Route
-            path="/restart_in_julia"
+            path='/restart_in_julia'
             component={() =>
               redirectToUrl(
-                "https://oddeirikigland.github.io/restarts-in-julia/stable/"
-              )
-            }
+                'https://oddeirikigland.github.io/restarts-in-julia/stable/'
+              )}
           />
           <Route
-            path="/pred_telenor"
+            path='/pred_telenor'
             component={() =>
               redirectToUrl(
-                "https://htmlpreview.github.io/?https://raw.githubusercontent.com/oddeirikigland/Summer-Project-Smarte-bygg/master/models/all_models.html"
-              )
-            }
+                'https://htmlpreview.github.io/?https://raw.githubusercontent.com/oddeirikigland/Summer-Project-Smarte-bygg/master/models/all_models.html'
+              )}
           />
 
           <Route component={fouroffour} />
         </Switch>
       </BrowserRouter>
-    );
+    )
   }
 }

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import axios from "axios";
-import { css } from "@emotion/core";
-import RingLoader from "react-spinners/RingLoader";
+import React, { Component } from 'react'
+import axios from 'axios'
+import { css } from '@emotion/core'
+import RingLoader from 'react-spinners/RingLoader'
 
-import SegmentMap from "../../components/Map/SegmentMap";
+import SegmentMap from '../../components/Map/SegmentMap'
 
 const segmentAnalyzerStyle = {
-  width: "100%",
-  height: "100%"
-};
+  width: '100%',
+  height: '100%'
+}
 
 const spinnerStyle = css`
   top: 0;
@@ -18,21 +18,21 @@ const spinnerStyle = css`
   margin: auto;
   position: absolute;
   z-index: 99;
-`;
+`
 
 export default class SegmentAnalyzer extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       segments: [],
       loading: false
-    };
-    this.get_segments = this.get_segments.bind(this);
-    this.segmentApiUpdate = this.segmentApiUpdate.bind(this);
-    this.toogleLoading = this.toogleLoading.bind(this);
+    }
+    this.getSegments = this.getSegments.bind(this)
+    this.segmentApiUpdate = this.segmentApiUpdate.bind(this)
+    this.toogleLoading = this.toogleLoading.bind(this)
   }
 
-  get_segments(
+  getSegments (
     countyNumber,
     segmentDistance,
     latitude,
@@ -40,21 +40,21 @@ export default class SegmentAnalyzer extends Component {
     activityView,
     numberOfSegments
   ) {
-    const loading = true;
-    this.setState({ loading });
+    const loading = true
+    this.setState({ loading })
 
     axios
       .get(
         `https://segment-analyzer.herokuapp.com/strava_segments?county_number=${countyNumber}&segment_distance=${segmentDistance}&latitude=${latitude}&longitude=${longitude}&activity_view=${activityView}&number_of_segments=${numberOfSegments}`
       )
       .then(res => {
-        const segments = res.data;
-        const loading = false;
-        this.setState({ segments, loading });
-      });
+        const segments = res.data
+        const loading = false
+        this.setState({ segments, loading })
+      })
   }
 
-  segmentApiUpdate(
+  segmentApiUpdate (
     countyNumber,
     segmentDistance,
     latitude,
@@ -62,28 +62,28 @@ export default class SegmentAnalyzer extends Component {
     activityView,
     numberOfSegments
   ) {
-    this.get_segments(
+    this.getSegments(
       countyNumber,
       segmentDistance,
       latitude,
       longitude,
       activityView,
       numberOfSegments
-    );
+    )
   }
 
-  toogleLoading() {
-    this.setState({ loading: !this.state.loading });
+  toogleLoading () {
+    this.setState({ loading: !this.state.loading })
   }
 
-  render() {
+  render () {
     return (
-      <div id={"segmentAnalyzer"} style={segmentAnalyzerStyle}>
+      <div id='segmentAnalyzer' style={segmentAnalyzerStyle}>
         <RingLoader
           css={spinnerStyle}
-          sizeUnit={"px"}
+          sizeUnit='px'
           size={150}
-          color={"#36D7B7"}
+          color='#36D7B7'
           loading={this.state.loading}
         />
         <SegmentMap
@@ -92,6 +92,6 @@ export default class SegmentAnalyzer extends Component {
           toogleLoading={this.toogleLoading}
         />
       </div>
-    );
+    )
   }
 }

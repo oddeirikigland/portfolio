@@ -1,52 +1,52 @@
-import React, { Component } from "react";
-import * as THREE from "three";
+import React, { Component } from 'react'
+import * as THREE from 'three'
 
-var camera, scene, renderer;
-var geometry, material, mesh;
-var light;
+var camera, scene, renderer
+var geometry, material, mesh
+var light
 
-function init() {
+function init () {
   camera = new THREE.PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.01,
     10
-  );
-  camera.position.z = 1;
+  )
+  camera.position.z = 1
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color("lightgray");
+  scene = new THREE.Scene()
+  scene.background = new THREE.Color('lightgray')
 
-  light = new THREE.DirectionalLight(0xffffff);
-  light.position.set(0, 20, 10);
-  scene.add(light);
+  light = new THREE.DirectionalLight(0xffffff)
+  light.position.set(0, 20, 10)
+  scene.add(light)
 
-  geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-  material = new THREE.MeshNormalMaterial();
-  mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+  geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1)
+  material = new THREE.MeshNormalMaterial()
+  mesh = new THREE.Mesh(geometry, material)
+  scene.add(mesh)
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+  renderer = new THREE.WebGLRenderer({ antialias: true })
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  document.body.appendChild(renderer.domElement)
 }
 
-function animate() {
-  requestAnimationFrame(animate);
+function animate () {
+  global.requestAnimationFrame(animate)
 
-  mesh.rotation.x += 0.05;
-  mesh.rotation.y += 0.0;
+  mesh.rotation.x += 0.05
+  mesh.rotation.y += 0.0
 
-  renderer.render(scene, camera);
+  renderer.render(scene, camera)
 }
 
 export default class Animation extends Component {
-  componentDidMount() {
-    init();
-    animate();
+  componentDidMount () {
+    init()
+    animate()
   }
 
-  render() {
-    return <div ref={ref => (this.mount = ref)} />;
+  render () {
+    return <div ref={ref => (this.mount = ref)} />
   }
 }
