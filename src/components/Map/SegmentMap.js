@@ -59,8 +59,8 @@ export default class SegmentMap extends Component {
       focusCountyNumber: 0,
       numberOfSegments: 100
     }
-    this.onSliderChange = this.onSliderChange.bind(this)
-    this.onAfterSliderChange = this.onAfterSliderChange.bind(this)
+    this.handleOnSliderChange = this.handleOnSliderChange.bind(this)
+    this.handleOnAfterSliderChange = this.handleOnAfterSliderChange.bind(this)
   }
 
   componentDidMount () {

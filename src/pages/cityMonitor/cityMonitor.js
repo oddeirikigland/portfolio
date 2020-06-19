@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-
+import RingLoader from 'react-spinners/RingLoader'
+import { css } from '@emotion/core'
 import CityMonitorMap from '../../components/Map/CityMonitorMap'
 
 const CLIENT_ID = process.env.REACT_APP_CYCLE_IDENTIFIER
@@ -9,6 +10,16 @@ const segmentAnalyzerStyle = {
   width: '100%',
   height: '100%'
 }
+
+const spinnerStyle = css`
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  position: absolute;
+  z-index: 99;
+`
 
 export default class CityMonitor extends Component {
   constructor (props) {
@@ -19,16 +30,17 @@ export default class CityMonitor extends Component {
       availability: []
     }
     this.getStations = this.getStations.bind(this)
-    this.get_availability = this.getAvailability.bind(this)
+    this.getAvailability = this.getAvailability.bind(this)
   }
 
-  componentDidMount () {
-    this.getStations()
-    this.getAvailability()
+  async componentDidMount () {
+    this.setState({ loading: true })
+    await this.getStations()
+    await this.getAvailability()
     setInterval(() => this.getAvailability(), 11000)
   }
 
-  getStations () {
+  async getStations () {
     const URL =
       'https://gbfs.urbansharing.com/trondheimbysykkel.no/station_information.json'
 
@@ -43,7 +55,8 @@ export default class CityMonitor extends Component {
       })
   }
 
-  getAvailability () {
+  async getAvailability () {
+    this.setState({ loading: true })
     const URL =
       'https://gbfs.urbansharing.com/trondheimbysykkel.no/station_status.json'
 
@@ -74,13 +87,20 @@ export default class CityMonitor extends Component {
         }
       })
 
-      return { stations }
+      return { stations, loading: false }
     })
   }
 
   render () {
     return (
       <div id='cityMonitor' style={segmentAnalyzerStyle}>
+        <RingLoader
+          css={spinnerStyle}
+          sizeUnit='px'
+          size={150}
+          color='#36D7B7'
+          loading={this.state.loading}
+        />
         <CityMonitorMap stations={this.state.stations} />
       </div>
     )
