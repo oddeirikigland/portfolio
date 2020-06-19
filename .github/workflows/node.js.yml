@@ -36,11 +36,9 @@ jobs:
           REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}
           REACT_APP_CYCLE_IDENTIFIER: ${{ secrets.REACT_APP_CYCLE_IDENTIFIER }}
           REACT_APP_TRACKING_CODE: ${{ secrets.REACT_APP_TRACKING_CODE }}
-    on:
-      push:
-        branches: [ master ]
-        - name: Deploy to github pages
-          uses: peaceiris/actions-gh-pages@v3
-          with:
-            deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-            publish_dir: ./build
+    - name: Deploy to github pages
+    if: ${{ github.event_name == 'pull_request'
+    uses: peaceiris/actions-gh-pages@v3
+    with:
+      deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+      publish_dir: ./build
