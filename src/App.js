@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import ReactGA from "react-ga"
+import ReactGA from 'react-ga'
 import Home from './pages/home/Home'
 import SegmentAnalyzer from './pages/segmentAnalyzer/SegmentAnalyzer'
 import Form from './pages/form/form'
