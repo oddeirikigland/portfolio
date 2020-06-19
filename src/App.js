@@ -7,8 +7,10 @@ import Form from './pages/form/form'
 import Animation from './pages/animation/animation'
 import CityMonitor from './pages/cityMonitor/cityMonitor'
 
-ReactGA.initialize(process.env.REACT_APP_TRACKING_CODE)
-ReactGA.pageview('/')
+if (process.env.NODE_ENV === 'production') {
+  ReactGA.initialize(process.env.REACT_APP_TRACKING_CODE)
+  ReactGA.pageview('/')
+}
 
 const fouroffour = () => (
   <div
