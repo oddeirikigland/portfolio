@@ -22,7 +22,7 @@
     "react-speech-recognition": "^2.0.4",
     "react-spinners": "^0.6.1",
     "styled-css-grid": "^1.2.1",
-    "three": "^0.111.0"
+    "three": "^0.125.0"
   },
   "scripts": {
     "start": "react-scripts start",
